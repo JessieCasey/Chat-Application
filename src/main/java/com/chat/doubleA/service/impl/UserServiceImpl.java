@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,19 +39,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         if (user != null) {
-            user.setPassword(user.getPassword());
-            user.setRole(roleRepository.findByName("user").orElseThrow(NullEntityReferenceException::new));
-
+            user.setCreatedAt(LocalDateTime.now());
+            user.setRole(roleRepository.findByName("USER").orElseThrow(NullEntityReferenceException::new));
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+
             return userRepository.save(user);
         }
         throw new NullEntityReferenceException("User cannot be 'null'");
     }
 
     @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public User readById(String id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new IllegalArgumentException("User with id " + id + " not found"));
+    }
+
+    @Override
+    public User readByEmail(String email) {
+        return userRepository.findById(email).orElseThrow(
+                () -> new IllegalArgumentException("User with email " + email + " not found"));
     }
 
     @Override
@@ -69,5 +81,27 @@ public class UserServiceImpl implements UserService {
             chatrooms.addAll(user.getMember());
 
         return chatrooms.isEmpty() ? new ArrayList<>() : chatrooms;
+    }
+
+    @Override
+    public List<User> getAll() {
+        List<User> users = userRepository.findAll();
+        return users.isEmpty() ? new ArrayList<>() : users;
+    }
+
+    @Override
+    public User update(User user) {
+        System.out.println(user);
+        if (user != null) {
+            readById(user.getId());
+            return userRepository.save(user);
+        } else {
+            throw new NullEntityReferenceException("User cannot be 'null'");
+        }
+    }
+
+    @Override
+    public User readByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(NullPointerException::new);
     }
 }

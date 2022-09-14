@@ -11,7 +11,17 @@ public interface UserService {
 
     User readById(String id);
 
+    User readByEmail(String id);
+
+    User readByUsername(String title);
+
     void delete(String id);
 
     List<Chatroom> getAllByUser(User user);
+
+    List<User> getAll();
+
+    User update(User user);
+
+    void save(User user);
 }

@@ -14,4 +14,9 @@ public interface ChatroomService {
     Chatroom readByTitle(String title);
 
     Chatroom readById(String id);
+
+    void save(Chatroom chatroom);
+
+    Chatroom update(Chatroom chatroom);
+
 }

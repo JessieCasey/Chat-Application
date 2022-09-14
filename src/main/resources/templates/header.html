@@ -14,6 +14,14 @@
                 <a th:href="@{/}"> <span class="navbar-brand animation fs-4 fw-bold">&A</span></a>
             </div>
 
+            <div sec:authorize="hasAnyAuthority('MODERATOR', 'ADMIN')">
+                <div class="left" style="top: 12px; left: 80px">
+                    <a th:href="@{/board}">
+                        <button class="btn btn-dark">Board</button>
+                    </a>
+                </div>
+            </div>
+
             <div class="right">
                 <span sec:authorize="isAuthenticated()">
                         <form class="right" action="/auth/logout" method="POST">

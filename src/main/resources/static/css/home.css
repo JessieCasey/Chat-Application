@@ -145,7 +145,7 @@ Banner Style
 
 .main-banner {
   animation: gradient 15s ease infinite;
-  background: linear-gradient(-45deg, #243B55, #1d2a44, #141E30) center center;
+  background: linear-gradient(-45deg, #28425e, #21304d, #1c2a44) center center;
   background-size: 400% 400%;
   min-height: 380px;
   border-radius: 15px;

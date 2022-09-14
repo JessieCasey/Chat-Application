@@ -36,11 +36,15 @@ public class ChatroomServiceImpl implements ChatroomService {
         if (chatroom != null) {
             chatroom.setCreatedAt(LocalDateTime.now());
             chatroom.setPassword(passwordEncoder.encode(chatroom.getPassword()));
-            Chatroom save = chatroomRepository.save(chatroom);
-            user.setOwner(chatroom);
-            return save;
+            user.getOwner().add(chatroom);
+            return chatroomRepository.save(chatroom);
         }
         throw new NullEntityReferenceException("Chatroom cannot be 'null'");
+    }
+
+    @Override
+    public void save(Chatroom chatroom) {
+        chatroomRepository.save(chatroom);
     }
 
     @Override
@@ -56,8 +60,21 @@ public class ChatroomServiceImpl implements ChatroomService {
     public void delete(User user, String id) {
         Chatroom chatroom = chatroomRepository.findById(id).orElseThrow(NullPointerException::new);
         user.getMember().remove(chatroom);
+        user.getOwner().remove(chatroom);
         userRepository.save(user);
         chatroomRepository.delete(chatroom);
+    }
+
+    @Override
+    public Chatroom update(Chatroom chatroom) {
+        System.out.println(chatroom);
+        if (chatroom != null) {
+            readById(chatroom
+                    .getId());
+            return chatroomRepository.save(chatroom);
+        } else {
+            throw new NullEntityReferenceException("Chatroom cannot be 'null'");
+        }
     }
 
     @Override

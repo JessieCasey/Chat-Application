@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <title>Home of chat application</title>
+
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="text-bg-dark">
+<div th:replace="header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-content">
+                <div class="gaming-library" id="chat-library">
+                    <div class="col-lg-12">
+                        <div class="heading-section">
+                            <h5><span class="text-white" th:text="${user.getUsername()} + '\'s '"></span> messages</h5>
+                        </div>
+                        <div class="item">
+                            <ul th:each="message: ${user.getMessages()}">
+                                <li><h4 th:text="${message.getType().name()}"></h4><span>Type</span></li>
+
+                                <li><h4 th:text="${message.getContent()}"></h4><span>Content</span></li>
+
+                                <li><h4 th:text="${message.getCreatedAt().format(dateTimeFormatter)}"></h4><span>Date Added</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 mt-3">
+                        <div class="heading-section">
+                            <h5><span class="text-white" th:text="${user.getUsername()} + '\'s '"></span> chatrooms</h5>
+                        </div>
+                        <div class="item">
+                            <ul th:each="chatroom: ${user.getOwner()}">
+                                <li><h4 th:href="'/chat/connection/' + ${chatroom.getTitle()}"
+                                        th:text="${chatroom.getTitle()}"></h4><span>Title</span></li>
+
+                                <li><h4 th:text="${chatroom.getTopic()}"></h4><span>Topic</span></li>
+
+                                <li><h4 th:text="${chatroom.getParticipantsCount()}"></h4><span>Members</span></li>
+
+                                <li><h4>Date Added</h4><span
+                                        th:text="${chatroom.getCreatedAt().format(dateTimeFormatter)}"></span></li>
+
+                                <li>
+                                    <div class="main-border-button" style="margin-left: -40px"><a th:href="'/chat/delete/' + ${chatroom.getId()}">Remove</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>No Copyright © 1356 <a href="#">Tony</a> Company. All rights reserved.
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>

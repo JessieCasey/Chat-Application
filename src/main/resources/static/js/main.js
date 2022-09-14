@@ -17,6 +17,8 @@ let username = null;
 let roomId = null;
 let topic = null;
 
+let port = 9091;
+
 let colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
     '#ffc107', '#ff85af', '#FF9800', '#39bbb0'
@@ -28,7 +30,7 @@ function connect(event) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
-        var socket = new SockJS('http://localhost:9091/ws');
+        var socket = new SockJS('http://localhost:' + port + '/ws');
         stompClient = Stomp.over(socket);
 
         stompClient.connect({}, onConnected, onError);

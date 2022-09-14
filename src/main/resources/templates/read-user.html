@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${action} + 'user' "></title>
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="center container mt-3">
+    <h3>Create New ToDo List</h3>
+</div>
+<form class="form-horizontal center container mt-2" th:object="${userDTO}" th:action="'/users/action/' + ${action}"
+      method="post">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="username">Username</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" th:field="*{username}" id="username"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"></small>
+        </div>
+        <div class="col-sm-offset-2 col-sm-8 mt-3">
+            <button type="submit" class="btn btn-dark btn-sm" th:text="${action}"></button>
+            <a class="text-decoration-none" style="margin-left: 10px"
+               th:href="@{/board}">
+                <button type="button" class="btn btn-light btn-sm">Get Back</button>
+            </a>
+        </div>
+    </div>
+</form>
+</body>
+</html>

@@ -15,12 +15,6 @@
         <div class="col-sm-4">
             <input type="email" class="form-control" th:field="*{email}" id="email"/>
             <small class="form-text text-muted" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
-
-            <div class="mt-2">
-                <input type="submit" class="btn btn-dark " value="Sign in"/>
-                <input type="reset" class="btn btn-light " value="Clear"/>
-            </div>
-
         </div>
     </div>
     <div class="form-group mt-1">
@@ -39,6 +33,10 @@
             <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
                    th:errors="*{password}"></small>
         </div>
+    </div>
+    <div class="mt-2">
+        <input type="submit" class="btn btn-dark " value="Sign in"/>
+        <input type="reset" class="btn btn-light " value="Clear"/>
     </div>
 </form>
 </body>

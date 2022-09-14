@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <title>Home of chat application</title>
+
+    <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body class="text-bg-dark">
+<div th:replace="header"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-content">
+
+                <div class="main-banner">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="header-text">
+                                <h6>Hello! <span th:text="${authUser}"></span></h6>
+                                <h4>Let's see who will be banned today</h4>
+                                <div class="main-button">
+                                    <a th:href="@{/users/action/Read}">Read</a>
+                                    <a style="margin-left: 10px" th:href="@{/users/action/Ran}">Ban</a>
+                                    <a style="margin-left: 10px" th:href="@{/users/action/Permit}">Permit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gaming-library" id="chat-library">
+                    <div class="col-lg-12">
+                        <div class="heading-section">
+                            <h4>User's chats</h4>
+                        </div>
+                        <div class="item">
+                            <ul th:each="user: ${users}">
+                                <li><h4 th:text="${user.getUsername()}"></h4><span>Username</span></li>
+
+                                <li><h4 th:text="${user.getRole().getName()}"></h4><span>Role</span></li>
+
+                                <li><h4 th:text="${user.getOwner().size()}"></h4><span>Own chats</span></li>
+
+                                <li><h4 th:text="${user.getMember().size()}"></h4><span>Member of chat</span></li>
+
+                                <li>
+                                    <div class="main-border-button">
+                                        <a th:href="'/users/' + ${user.getId()}">Read</a>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="main-border-button">
+                                        <a th:href="'/users/ban/' + ${user.getId()}">Ban</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>No Copyright © 1356 <a href="#">Tony</a> Company. All rights reserved.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .main-banner {
+        animation: gradient 15s ease infinite;
+        background: linear-gradient(-45deg, #b92b27, #1565C0) center center;
+        background-size: 400% 400%;
+        min-height: 380px;
+        border-radius: 15px;
+        padding: 80px 60px;
+    }
+</style>
+</body>
+
+</html>

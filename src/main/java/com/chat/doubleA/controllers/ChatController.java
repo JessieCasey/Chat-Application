@@ -10,6 +10,7 @@ import com.chat.doubleA.repositories.ChatroomRepository;
 import com.chat.doubleA.repositories.UserRepository;
 import com.chat.doubleA.security.SecurityUser;
 import com.chat.doubleA.service.ChatroomService;
+import com.chat.doubleA.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +41,14 @@ public class ChatController {
     private final SimpMessageSendingOperations messagingTemplate;
     private final UserRepository userRepository;
     private final ChatroomService chatroomService;
-    private final ChatroomRepository chatroomRepository;
+    private final UserService userService;
 
     @Autowired
-    public ChatController(SimpMessageSendingOperations messagingTemplate, UserRepository userRepository, ChatroomService chatroomService, ChatroomRepository chatroomRepository) {
+    public ChatController(SimpMessageSendingOperations messagingTemplate, UserRepository userRepository, ChatroomService chatroomService, UserService userService) {
         this.messagingTemplate = messagingTemplate;
         this.userRepository = userRepository;
         this.chatroomService = chatroomService;
-        this.chatroomRepository = chatroomRepository;
+        this.userService = userService;
     }
 
     @MessageMapping("/chat/{roomId}/sendMessage")
@@ -55,9 +56,15 @@ public class ChatController {
         logger.info("[MessageMapping] method 'sendMessage'");
 
         Chatroom chatroom = chatroomService.readByTitle(roomId);
+
         if (chatMessage.getType().equals(ChatMessage.MessageType.CHAT)) {
             chatroom.getMessages().add(chatMessage);
-            chatroomRepository.save(chatroom);
+
+            User user = userService.readByUsername(chatMessage.getSender());
+            user.getMessages().add(chatMessage);
+
+            chatroomService.save(chatroom);
+            userService.save(user);
         }
 
         messagingTemplate.convertAndSend(format("/topic/%s", roomId), chatMessage);
@@ -80,7 +87,7 @@ public class ChatController {
 
         chatroom.getMessages().forEach(x -> messagingTemplate.convertAndSend(format("/topic/%s", roomId), x));
 
-        chatroomRepository.save(chatroom);
+        chatroomService.save(chatroom);
     }
 
     @GetMapping("/connection/{title}")
@@ -90,9 +97,8 @@ public class ChatController {
                                   @PathVariable String title) {
         logger.info("[GetMapping] method 'connectChatroom'");
 
-        User authUser = userRepository
-                .findByEmail(((SecurityUser) authentication.getPrincipal()).getUsername())
-                .orElseThrow(NullPointerException::new);
+        User authUser = userService.
+                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
 
         Chatroom chatroom = chatroomService.readByTitle(title);
 
@@ -111,28 +117,28 @@ public class ChatController {
                                    @PathVariable String password) {
         logger.info("[GetMapping] method 'inviteToChatroom'");
 
-        User authUser = userRepository
-                .findByEmail(((SecurityUser) authentication.getPrincipal()).getUsername())
-                .orElseThrow(NullPointerException::new);
+        User authUser = userService.
+                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
 
         Chatroom chatroom = chatroomService.readByTitle(title);
 
-        if (authUser.getMember().contains(chatroom)) {
+        if (authUser.getMember().contains(chatroom) || chatroom.getOwner().equals(authUser)) {
             logger.warn("In method 'inviteToChatroom' user is already member of the chatroom");
             return "redirect:/";
-        }
 
-        if (chatroom.getId().equals(id) && chatroom.getUnifiedPassword().equals(password)) {
+        } else if (chatroom.getId().equals(id) && chatroom.getUnifiedPassword().equals(password)) {
             chatroom.getMembers().add(authUser);
             authUser.getMember().add(chatroom);
-            userRepository.save(authUser);
-            chatroomRepository.save(chatroom);
+
+            userService.update(authUser);
+            chatroomService.update(chatroom);
 
             model.addAttribute("chatroom", chatroom);
             model.addAttribute("message", "You were invited with a link by " + username);
             model.addAttribute("authUser", authUser.getUsername());
 
             return "connection";
+
         } else {
             logger.error("Access denied due to changing original link");
             throw new AccessDeniedException("Access denied due to changing original link");
@@ -142,11 +148,10 @@ public class ChatController {
     @GetMapping("/delete/{id}")
     public String deleteChatroom(Authentication authentication,
                                  @PathVariable String id) {
-        logger.info("[PostMapping] method 'deleteChatroom'");
+        logger.info("[GetMapping] method 'deleteChatroom'");
 
-        User authUser = userRepository
-                .findByEmail(((SecurityUser) authentication.getPrincipal()).getUsername())
-                .orElseThrow(NullPointerException::new);
+        User authUser = userService.
+                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
 
         Chatroom chatroom = chatroomService.readById(id);
         if (chatroom.getOwner().equals(authUser)) {
@@ -165,9 +170,8 @@ public class ChatController {
                                  @PathVariable String action) {
         logger.info("[PostMapping] method 'handleChatroom'");
 
-        User authUser = userRepository
-                .findByEmail(((SecurityUser) authentication.getPrincipal()).getUsername())
-                .orElseThrow(NullPointerException::new);
+        User authUser = userService.
+                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
 
         if (action.equals("Add")) {
             chatroomService.create(authUser, new Chatroom(chatroomDTO.getTitle(), chatroomDTO.getTopic(), chatroomDTO.getPassword(), authUser));

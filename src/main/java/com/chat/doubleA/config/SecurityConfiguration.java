@@ -30,20 +30,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/users/create").permitAll()
-                .anyRequest()
-                .authenticated()
+                    .antMatchers("/auth/login", "/users/create").permitAll()
+                    .antMatchers("/users").access("not( hasRole('BANNED') ) and isAuthenticated()")
+                    .antMatchers("/chat").access("not( hasRole('BANNED') ) and isAuthenticated()")
+                    .antMatchers("/", "/home").access("not( hasRole('BANNED') ) and isAuthenticated()")
                 .and()
                 .formLogin()
-                .loginPage("/auth/login").permitAll()
-                .defaultSuccessUrl("/home")
+                    .loginPage("/auth/login").permitAll()
+                    .defaultSuccessUrl("/home")
                 .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .deleteCookies("JSESSIONID")
-                .logoutSuccessUrl("/auth/login");
+                    .logout()
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST"))
+                    .invalidateHttpSession(true)
+                    .clearAuthentication(true)
+                    .deleteCookies("JSESSIONID")
+                    .logoutSuccessUrl("/auth/login");
     }
 
     @Override

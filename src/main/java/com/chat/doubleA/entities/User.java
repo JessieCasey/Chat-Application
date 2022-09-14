@@ -9,6 +9,7 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Pattern;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,14 +36,18 @@ public class User {
             message = "Must contain at least one digit")
     private String password;
 
+    private LocalDateTime createdAt;
+
     @DBRef
     private Role role;
 
     @DBRef
-    private Chatroom owner;
+    private List<Chatroom> owner = new ArrayList<>();
 
     @DBRef
     private List<Chatroom> member = new ArrayList<>();
+
+    private List<ChatMessage> messages = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
@@ -57,13 +62,5 @@ public class User {
     @Override
     public int hashCode() {
         return id != null ? id.hashCode() : 0;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id='" + id + '\'' +
-                ", username='" + username + '\'' +
-                '}';
     }
 }
