@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New User registration</title>
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="center container mt-3">
+    <h3>Create New User</h3>
+</div>
+<form class="form-horizontal center container mt-2" th:action="@{/users/create}" th:object="${user}" method="post">
+    <div class="form-group mt-1">
+        <label class="col-sm-2 control-label" for="email">E-mail</label>
+        <div class="col-sm-4">
+            <input type="email" class="form-control" th:field="*{email}" id="email"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
+
+            <div class="mt-2">
+                <input type="submit" class="btn btn-dark " value="Sign in"/>
+                <input type="reset" class="btn btn-light " value="Clear"/>
+            </div>
+
+        </div>
+    </div>
+    <div class="form-group mt-1">
+        <label class="col-sm-2 control-label" for="username">Username</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" th:field="*{username}" id="username"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('username')}"
+                   th:errors="*{username}"></small>
+        </div>
+    </div>
+    </div>
+    <div class="form-group mt-1">
+        <label class="col-sm-2 control-label">Password</label>
+        <div class="col-sm-4">
+            <input type="password" class="form-control" th:field="*{password}" id="password"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"></small>
+        </div>
+    </div>
+</form>
+</body>
+</html>

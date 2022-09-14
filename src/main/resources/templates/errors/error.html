@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error page</title>
+    <link rel="stylesheet" href="/css/error.css"/>
+
+</head>
+<body>
+<div class="block">
+    <p class="animation-title" th:text="${code}"/>
+    <p class="animation-error" style="margin: 30px auto 0;" th:text="${message}"/>
+</div>
+<a href="/home">
+    <button style="margin-top: 30px" class="glow-on-hover" type="button">Home page</button>
+</a>
+</body>
+</html>

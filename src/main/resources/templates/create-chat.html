@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New ToDo List</title>
+</head>
+<body>
+<div th:replace="header"></div>
+<div class="center container mt-3">
+    <h3>Create New ToDo List</h3>
+</div>
+<form class="form-horizontal center container mt-2" th:object="${chatroom}" th:action="'/chat/' + ${action}"
+      method="post">
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="title">Title</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" th:field="*{title}" id="title"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></small>
+        </div>
+        <label class="col-sm-2 control-label" for="title">Topic</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" th:field="*{topic}" id="topic"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('topic')}" th:errors="*{topic}"></small>
+        </div>
+        <label class="col-sm-2 control-label" for="title">Password</label>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" th:field="*{password}" id="password"/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('password')}"
+                   th:errors="*{password}"></small>
+        </div>
+        <div class="col-sm-4 hidden">
+            <input class="form-control" type="text" th:field="*{action}" id="action" hidden/>
+            <small class="form-text text-muted" th:if="${#fields.hasErrors('action')}" th:errors="*{action}"></small>
+        </div>
+
+        <div class="col-sm-offset-2 col-sm-8 mt-3">
+            <button type="submit" class="btn btn-dark btn-sm" th:text="${action}"></button>
+            <a class="text-decoration-none" style="margin-left: 10px"
+               th:href="@{/}">
+                <button type="button" class="btn btn-light btn-sm">Home</button>
+            </a>
+        </div>
+    </div>
+</form>
+</body>
+</html>
