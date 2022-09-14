@@ -51,13 +51,13 @@ public class Bootstrap {
                     kate.setRole(bannedRole);
                     userRepository.insert(kate);
 
-                    User bodya = new User();
-                    bodya.setEmail("b@gmail.com");
-                    bodya.setCreatedAt(LocalDateTime.now());
-                    bodya.setPassword(passwordEncoder.encode("1"));
-                    bodya.setUsername("Bodya");
-                    bodya.setRole(userRole);
-                    userRepository.insert(bodya);
+                    User alex = new User();
+                    alex.setEmail("a@gmail.com");
+                    alex.setCreatedAt(LocalDateTime.now());
+                    alex.setPassword(passwordEncoder.encode("Alex1"));
+                    alex.setUsername("Alex");
+                    alex.setRole(userRole);
+                    userRepository.insert(alex);
 
                     if (!chatroomRepository.existsByTitle("Gastronomy Lobby")) {
                         Chatroom chatroom = new Chatroom("Gastronomy", "Cooking", passwordEncoder.encode("123"), tony);
