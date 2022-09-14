@@ -45,7 +45,7 @@ function enterRoom(newRoomId) {
         currentSubscription.unsubscribe();
     }
 
-    currentSubscription = stompClient.subscribe(`/channel/${roomId}`, onMessageReceived);
+    currentSubscription = stompClient.subscribe(`/topic/${roomId}`, onMessageReceived);
 
     stompClient.send(`${topic}/addUser`,
         {},
@@ -90,12 +90,12 @@ function onMessageReceived(payload) {
 
     if (message.type == 'UPDATE') {
         $("li").remove(".chat-message");
-    } else if (message.type == 'JOIN') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' joined!';
+    } else if (message.type == 'SYNC') {
+
+    }else if (message.type == 'JOIN') {
+
     } else if (message.type == 'LEAVE') {
-        messageElement.classList.add('event-message');
-        message.content = message.sender + ' left!';
+
     } else {
         messageElement.classList.add('chat-message');
 

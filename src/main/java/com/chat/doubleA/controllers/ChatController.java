@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.lang.String.format;
@@ -59,7 +60,7 @@ public class ChatController {
             chatroomRepository.save(chatroom);
         }
 
-        messagingTemplate.convertAndSend(format("/channel/%s", roomId), chatMessage);
+        messagingTemplate.convertAndSend(format("/topic/%s", roomId), chatMessage);
 
     }
 
@@ -68,16 +69,16 @@ public class ChatController {
                         SimpMessageHeaderAccessor headerAccessor) {
         logger.info("[MessageMapping] method 'addUser'");
 
+        messagingTemplate.convertAndSend(format("/topic/%s", roomId), new ChatMessage(ChatMessage.MessageType.UPDATE));
+
         Chatroom chatroom = chatroomService.readByTitle(roomId);
 
-        messagingTemplate.convertAndSend(format("/channel/%s", roomId), new ChatMessage(ChatMessage.MessageType.UPDATE));
-
-        headerAccessor.getSessionAttributes().put("username", message.getSender());
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getSender());
 
         if (message.getType().equals(ChatMessage.MessageType.CHAT))
             chatroom.getMessages().add(message);
 
-        chatroom.getMessages().forEach(x -> messagingTemplate.convertAndSend(format("/channel/%s", roomId), x));
+        chatroom.getMessages().forEach(x -> messagingTemplate.convertAndSend(format("/topic/%s", roomId), x));
 
         chatroomRepository.save(chatroom);
     }
