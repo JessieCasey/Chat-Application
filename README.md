@@ -1,2 +1,2 @@
 # Chat-application
-FullStack [Spring, React] chat application also it is implemented with RabbitMQ &amp; MongoDB 
+Application is built on Spring framework and MongoDB
