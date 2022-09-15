@@ -3,6 +3,7 @@ package com.chat.doubleA.service;
 
 import com.chat.doubleA.entities.Chatroom;
 import com.chat.doubleA.entities.User;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ public interface UserService {
 
     User readById(String id);
 
-    User readByEmail(String id);
+    User getAuthUser(Authentication authentication);
 
     User readByUsername(String title);
 

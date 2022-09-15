@@ -7,7 +7,7 @@
 <body>
 <div th:replace="header"></div>
 <div class="center container mt-3">
-    <h3>Create New ToDo List</h3>
+    <h3 th:text="${action} + ' the user'"></h3>
 </div>
 <form class="form-horizontal center container mt-2" th:object="${userDTO}" th:action="'/users/action/' + ${action}"
       method="post">

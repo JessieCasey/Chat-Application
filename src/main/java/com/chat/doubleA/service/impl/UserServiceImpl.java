@@ -6,10 +6,12 @@ import com.chat.doubleA.exceptions.NullEntityReferenceException;
 import com.chat.doubleA.repositories.ChatroomRepository;
 import com.chat.doubleA.repositories.RoleRepository;
 import com.chat.doubleA.repositories.UserRepository;
+import com.chat.doubleA.security.SecurityUser;
 import com.chat.doubleA.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -60,9 +62,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User readByEmail(String email) {
-        return userRepository.findById(email).orElseThrow(
-                () -> new IllegalArgumentException("User with email " + email + " not found"));
+    public User getAuthUser(Authentication authentication) {
+        return userRepository
+                .findByEmail(((SecurityUser) authentication.getPrincipal()).getUsername())
+                .orElseThrow(NullPointerException::new);
     }
 
     @Override

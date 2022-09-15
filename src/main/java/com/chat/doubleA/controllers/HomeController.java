@@ -35,8 +35,7 @@ public class HomeController {
     public String home(Model model, Authentication authentication) {
         logger.info("[MessageMapping] method 'sendMessage'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         if (authUser.getRole().getName().equals("BANNED")) {
             throw new AccessDeniedException("You are banned");
@@ -49,13 +48,14 @@ public class HomeController {
         return "home";
     }
 
+
+
     @GetMapping({"/board"})
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
     public String adminBoard(Model model, Authentication authentication) {
         logger.info("[GetMapping] method 'adminBoard'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         logger.info("Admin " + authUser.getUsername() + "entered to the admin board");
         model.addAttribute("dateTimeFormatter", dateTimeFormatter);

@@ -6,9 +6,6 @@ import com.chat.doubleA.dto.chatroom.ChatroomRequestDTO;
 import com.chat.doubleA.entities.ChatMessage;
 import com.chat.doubleA.entities.Chatroom;
 import com.chat.doubleA.entities.User;
-import com.chat.doubleA.repositories.ChatroomRepository;
-import com.chat.doubleA.repositories.UserRepository;
-import com.chat.doubleA.security.SecurityUser;
 import com.chat.doubleA.service.ChatroomService;
 import com.chat.doubleA.service.UserService;
 import org.slf4j.Logger;
@@ -39,14 +36,12 @@ public class ChatController {
     private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final UserRepository userRepository;
     private final ChatroomService chatroomService;
     private final UserService userService;
 
     @Autowired
-    public ChatController(SimpMessageSendingOperations messagingTemplate, UserRepository userRepository, ChatroomService chatroomService, UserService userService) {
+    public ChatController(SimpMessageSendingOperations messagingTemplate, ChatroomService chatroomService, UserService userService) {
         this.messagingTemplate = messagingTemplate;
-        this.userRepository = userRepository;
         this.chatroomService = chatroomService;
         this.userService = userService;
     }
@@ -97,8 +92,7 @@ public class ChatController {
                                   @PathVariable String title) {
         logger.info("[GetMapping] method 'connectChatroom'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         Chatroom chatroom = chatroomService.readByTitle(title);
 
@@ -117,8 +111,7 @@ public class ChatController {
                                    @PathVariable String password) {
         logger.info("[GetMapping] method 'inviteToChatroom'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         Chatroom chatroom = chatroomService.readByTitle(title);
 
@@ -150,15 +143,14 @@ public class ChatController {
                                  @PathVariable String id) {
         logger.info("[GetMapping] method 'deleteChatroom'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         Chatroom chatroom = chatroomService.readById(id);
         if (chatroom.getOwner().equals(authUser)) {
             chatroomService.delete(authUser, id);
         } else {
             authUser.getMember().remove(chatroom);
-            userRepository.save(authUser);
+            userService.save(authUser);
         }
 
         return "redirect:/";
@@ -170,8 +162,7 @@ public class ChatController {
                                  @PathVariable String action) {
         logger.info("[PostMapping] method 'handleChatroom'");
 
-        User authUser = userService.
-                readByEmail(((SecurityUser) authentication.getPrincipal()).getUsername());
+        User authUser = userService.getAuthUser(authentication);
 
         if (action.equals("Add")) {
             chatroomService.create(authUser, new Chatroom(chatroomDTO.getTitle(), chatroomDTO.getTopic(), chatroomDTO.getPassword(), authUser));

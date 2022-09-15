@@ -48,7 +48,7 @@ public class Bootstrap {
                     kate.setCreatedAt(LocalDateTime.now());
                     kate.setPassword(passwordEncoder.encode("Kate1"));
                     kate.setUsername("Kate");
-                    kate.setRole(bannedRole);
+                    kate.setRole(userRole);
                     userRepository.insert(kate);
 
                     User alex = new User();
