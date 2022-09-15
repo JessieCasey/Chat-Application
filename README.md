@@ -80,7 +80,7 @@ Congratulations! You are inside the app 🎉
 
 ### 🚀 Before
 "I would recommend you to open different browsers (Or open second page in incognito mode) 
-and login with different users and enter to the same chatroom, 
+and login with different users and enter the same chatroom, 
 so then you can feel better how it works"
 
 ###  Start
