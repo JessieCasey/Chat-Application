@@ -16,7 +16,7 @@ Then, you can run .yaml files not only directly in IDE, but also in terminal
 ```bash
   docker-compose -f docker-rabbitMQ.yaml up
 ```
-Don't forget to enable stomp plagin in RabbitMQ
+Don't forget to enable stomp plugin in RabbitMQ
 (You could use CLI in Docker to enable it)
 
 ```bash
@@ -27,7 +27,7 @@ Don't forget to enable stomp plagin in RabbitMQ
 
 The server runs on 9091 port, but if have any conflicts, you can change it
 
-```java
+```
 #application.properties
 server.port=9091
 
@@ -48,7 +48,7 @@ public class Bootstrap {
 }
 ```
 
-After running, you can see Login page which is asking of E-mail and Passwords
+After running, you can see Login page which is asking for E-mail and Password.
 Thanks to Bootstrap class, we have users already in DB.
 
 #### Database
@@ -58,23 +58,37 @@ Thanks to Bootstrap class, we have users already in DB.
 | `Tony`   | `PassJava1` | tonyPizza@gmail.com | Admin|
 | `Kate`   | `PassJava2` | kate@gmail.com      | User |
 
+| Title  | Topic     | Password |
+|:-------|:----------|:---------|
+| `Gastronomy` | `Cooking` | 123      |
+
+### Congratulations
+
 Congratulations! You are inside the app 🎉
 
 ![alt text](./imgs/home.png)
 
-You are already connected to the chatroom, let's enter there
+
+### 🚀 Before
+"I would recommend you to open different browsers (Or open second page in incognito mode) 
+and login with different users and enter to the same chatroom, 
+so then you can feel better how it works"
+
+###  Start
+You are already connected to the chatroom, 
+let's enter there and try to write down anything to the chat.
 
 ![alt text](./imgs/chat.png)
 
-As you are admin, you have an access to the dashboard 
-where you can control and see what people do.
+As you are admin, you have access to the dashboard 
+where you can control and see what people have written before.
 
 ![alt text](./imgs/adminBoard.png)
 ![alt text](./imgs/messages.png)
 
 Furthermore, you are able to ban users or to unban them.
 In the case of it the user would see the next if he tries to enter to any endpoints.
-GlobalHandler catchs the error and redirect to the page with error description
+GlobalHandler can catch the error and redirect to the page with error description
 ![alt text](./imgs/banned.png)
 
 
