@@ -25,7 +25,7 @@ Also, we need to enable stomp plugin in RabbitMQ
 
 ![alt text](./imgs/docker_cli.png)
 
-The server runs on 9091 port, but if have any conflicts, you can change it
+The server runs on 9091 port, but if you have any conflicts, you can change it
 
 ```
 #application.properties
