@@ -106,7 +106,7 @@ GlobalHandler can catch that user is banned and redirect to the page with error 
 - Chatrooms are secured with passwords
 - History of every chatroom is saved in DB
 - If you are connecting via the link, you don't need to provide password
-- If the user is not owner, so the room will be erased locally on its profile
+- If the user is not an owner, so the room will be erased locally on its profile
 - Admin board, it provides all info about their messages
 - Banning system
 
