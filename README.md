@@ -47,7 +47,7 @@ public class Application {
 
 The project has a Bootstrap class,
 which  includes all pre-data you need to test the application,
-so you could avoid of registration the rooms or users to work with.
+so you could avoid registration the rooms or users to work with.
 
 ```java
 @Component
