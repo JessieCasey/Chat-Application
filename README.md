@@ -61,11 +61,11 @@ Thanks to Bootstrap class, we have users already in DB.
 
 #### Database
 
-| Username | Passwords   | Email               | Role |
-|:---------|:------------|:--------------------|:-----|
-| `Tony`   | `PassJava1` | tonyPizza@gmail.com | Admin|
-| `Kate`   | `PassJava2` | kate@gmail.com      | User |
-| `Alex`   | `PassJava3` | alex@gmail.com      | User |
+| Username | Passwords   | Email                 | Role |
+|:---------|:------------|:----------------------|:-----|
+| `Tony`   | `PassJava1` | `tonyPizza@gmail.com` | Admin|
+| `Kate`   | `PassJava2` | `kate@gmail.com`      | User |
+| `Alex`   | `PassJava3` | `alex@gmail.com`      | User |
 
 | Title  | Topic     | Password |
 |:-------|:----------|:---------|

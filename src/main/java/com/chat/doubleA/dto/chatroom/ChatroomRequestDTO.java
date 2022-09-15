@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class ChatroomRequestDTO {
+
     String title;
     String topic;
     String password;

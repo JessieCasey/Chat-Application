@@ -50,9 +50,8 @@ public class ChatController {
     public void sendMessage(@DestinationVariable String roomId, @Payload ChatMessage chatMessage) {
         logger.info("[MessageMapping] method 'sendMessage'");
 
-        Chatroom chatroom = chatroomService.readByTitle(roomId);
-
         if (chatMessage.getType().equals(ChatMessage.MessageType.CHAT)) {
+            Chatroom chatroom = chatroomService.readByTitle(roomId);
             chatroom.getMessages().add(chatMessage);
 
             User user = userService.readByUsername(chatMessage.getSender());
@@ -67,15 +66,13 @@ public class ChatController {
     }
 
     @MessageMapping("/chat/{roomId}/addUser")
-    public void addUser(@DestinationVariable String roomId, @Payload ChatMessage message,
-                        SimpMessageHeaderAccessor headerAccessor) {
+    public void addUser(@DestinationVariable String roomId, @Payload ChatMessage message, SimpMessageHeaderAccessor headerAccessor) {
         logger.info("[MessageMapping] method 'addUser'");
+        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getSender());
 
         messagingTemplate.convertAndSend(format("/topic/%s", roomId), new ChatMessage(ChatMessage.MessageType.UPDATE));
 
         Chatroom chatroom = chatroomService.readByTitle(roomId);
-
-        Objects.requireNonNull(headerAccessor.getSessionAttributes()).put("username", message.getSender());
 
         if (message.getType().equals(ChatMessage.MessageType.CHAT))
             chatroom.getMessages().add(message);
@@ -87,9 +84,8 @@ public class ChatController {
 
     @GetMapping("/connection/{title}")
     @PreAuthorize("@chatController.idComparator(#authentication.principal.id, #title)")
-    public String connectChatroom(Model model,
-                                  Authentication authentication,
-                                  @PathVariable String title) {
+    public String connectChatroom(Model model, Authentication authentication, @PathVariable String title) {
+
         logger.info("[GetMapping] method 'connectChatroom'");
 
         User authUser = userService.getAuthUser(authentication);
@@ -103,8 +99,7 @@ public class ChatController {
     }
 
     @GetMapping("/invite/server/{title}/{id}/{username}/{password}")
-    public String inviteToChatroom(Model model,
-                                   Authentication authentication,
+    public String inviteToChatroom(Model model, Authentication authentication,
                                    @PathVariable String title,
                                    @PathVariable String id,
                                    @PathVariable String username,
@@ -116,10 +111,10 @@ public class ChatController {
         Chatroom chatroom = chatroomService.readByTitle(title);
 
         if (authUser.getMember().contains(chatroom) || chatroom.getOwner().equals(authUser)) {
-            logger.warn("In method 'inviteToChatroom' user is already member of the chatroom");
+            logger.warn("In method 'inviteToChatroom': User is already member of the chatroom");
             return "redirect:/";
 
-        } else if (chatroom.getId().equals(id) && chatroom.getUnifiedPassword().equals(password)) {
+        } else if (chatroom.getId().equals(id) && chatroom.getCutPassword().equals(password)) {
             chatroom.getMembers().add(authUser);
             authUser.getMember().add(chatroom);
 
@@ -139,13 +134,12 @@ public class ChatController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteChatroom(Authentication authentication,
-                                 @PathVariable String id) {
+    public String deleteChatroom(Authentication authentication, @PathVariable String id) {
         logger.info("[GetMapping] method 'deleteChatroom'");
 
         User authUser = userService.getAuthUser(authentication);
-
         Chatroom chatroom = chatroomService.readById(id);
+
         if (chatroom.getOwner().equals(authUser)) {
             chatroomService.delete(authUser, id);
         } else {
@@ -157,9 +151,7 @@ public class ChatController {
     }
 
     @PostMapping("/{action}")
-    public String handleChatroom(Authentication authentication,
-                                 @Payload ChatroomDTO chatroomDTO,
-                                 @PathVariable String action) {
+    public String handleChatroom(Authentication authentication, @Payload ChatroomDTO chatroomDTO, @PathVariable String action) {
         logger.info("[PostMapping] method 'handleChatroom'");
 
         User authUser = userService.getAuthUser(authentication);
@@ -174,8 +166,7 @@ public class ChatController {
     }
 
     @GetMapping("/{action}")
-    public String handleChatroom(Model model,
-                                 @PathVariable String action) {
+    public String handleChatroom(Model model, @PathVariable String action) {
         logger.info("[GetMapping] method 'handleChatroom'");
 
         model.addAttribute("chatroom", new ChatroomRequestDTO(action));
@@ -184,8 +175,8 @@ public class ChatController {
 
     public boolean idComparator(String authenticatedUserId, String title) {
         logger.info("Method 'idComparator' was invoked");
-        Chatroom chatroom = chatroomService.readByTitle(title);
 
+        Chatroom chatroom = chatroomService.readByTitle(title);
         if (chatroom.getOwner().getId().equals(authenticatedUserId))
             return true;
 

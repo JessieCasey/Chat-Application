@@ -26,12 +26,6 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role readById(String id) {
-        return roleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Role with id '" + id + "' was not found"));
-    }
-
-    @Override
     public Role readByName(String name) {
         return roleRepository.findByName(name).orElseThrow(
                 () -> new IllegalArgumentException("Role with name '" + name + "' was not found"));

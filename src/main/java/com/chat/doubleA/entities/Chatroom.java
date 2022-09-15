@@ -68,7 +68,7 @@ public class Chatroom {
         return members.size() + 1;
     }
 
-    public String getUnifiedPassword() {
+    public String getCutPassword() {
         if (getPassword() == null)
             return "";
 

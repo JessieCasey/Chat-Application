@@ -32,7 +32,7 @@
 
         <div>
             <input type="text"
-                   th:value="'http://localhost:9091/chat/invite/server/' + *{chatroom.title} + '/' + *{chatroom.id} + '/' + *{authUser} + '/'  + *{chatroom.getUnifiedPassword()}"
+                   th:value="'http://localhost:9091/chat/invite/server/' + *{chatroom.title} + '/' + *{chatroom.id} + '/' + *{authUser} + '/'  + *{chatroom.getCutPassword()}"
                    id="invite-link-content" hidden>
 
             <button type="button" onclick="copyFunction()" class="btn btn-light" id="liveToastBtn">Create invite

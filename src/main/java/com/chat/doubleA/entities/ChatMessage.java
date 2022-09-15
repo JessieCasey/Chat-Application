@@ -1,7 +1,6 @@
 package com.chat.doubleA.entities;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;

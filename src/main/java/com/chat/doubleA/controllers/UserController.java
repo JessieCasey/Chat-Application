@@ -32,7 +32,7 @@ public class UserController {
     private final UserService userService;
     private final RoleService roleService;
 
-    public UserController(UserService userService, UserRepository userRepository, RoleService roleService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
     }
@@ -45,18 +45,19 @@ public class UserController {
 
     @PostMapping("/create")
     public String create(@Validated @ModelAttribute("user") User user, BindingResult result) {
+
         if (result.hasErrors()) {
             return "registration";
+        } else {
+            userService.create(user);
+            return "redirect:/home";
         }
 
-        userService.create(user);
-        return "redirect:/home";
     }
 
     @GetMapping("/action/{action}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
-    public String handleUserAction(Model model,
-                                   @PathVariable String action) {
+    public String handleUserAction(Model model, @PathVariable String action) {
         logger.info("[GetMapping] method 'handleUserAction'");
 
         model.addAttribute("userDTO", new UserRequestDTO());
@@ -67,11 +68,10 @@ public class UserController {
 
     @PostMapping("/action/{action}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
-    public String handleUserAction(@Payload UserRequestDTO userRequestDTO,
-                                   @PathVariable String action) {
+    public String handleUserAction(@Payload UserRequestDTO userRequestDTO, @PathVariable String action) {
         logger.info("[PostMapping] method 'handleUserAction'");
-        String id = userService.readByUsername(userRequestDTO.getUsername()).getId();
 
+        String id = userService.readByUsername(userRequestDTO.getUsername()).getId();
         if (action.equalsIgnoreCase("Permit")) {
             User user = userService.readById(id);
             user.setRole(roleService.readByName("USER"));
@@ -88,8 +88,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MODERATOR')")
-    public String readById(Model model,
-                           @PathVariable String id) {
+    public String readById(Model model, @PathVariable String id) {
 
         User user = userService.readById(id);
 
@@ -107,6 +106,7 @@ public class UserController {
             user.setRole(roleService.readByName("BANNED"));
             userService.update(user);
         }
+
         return "redirect:/board";
     }
 }
