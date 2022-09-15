@@ -95,9 +95,9 @@ where you can control and see what people have written before.
 ![alt text](./imgs/adminBoard.png)
 ![alt text](./imgs/messages.png)
 
-Furthermore, you are able to ban users or to unban them.
-In the case of it the user would see the next, if he tries to enter to any endpoints.
-GlobalHandler can catch the error and redirect to the page with error description. (Admin cannot be banned)
+Furthermore, you are able to ban users or to unban them. 
+In case a user is banned and they try to enter any endpoints, they will see the next (screenshot below).
+GlobalHandler can catch that user is banned and redirect to the page with error description. (Also, Admin cannot be banned)
 
 ![alt text](./imgs/banned.png)
 
