@@ -87,7 +87,7 @@ so then you can feel better how it works"
 You are already connected to the chatroom, 
 let's enter there and try to write down anything to the chat.
 
-![alt text](./imgs/chat.png)
+![alt text](./imgs/chat_messages.gif)
 
 As you are admin, you have access to the dashboard 
 where you can control and see what people have written before.
@@ -101,7 +101,7 @@ GlobalHandler can catch the error and redirect to the page with error descriptio
 
 ![alt text](./imgs/banned.png)
 
-## Features
+### Features
 
 - Chatrooms are secured with passwords
 - History of every chatroom is saved in DB
@@ -111,5 +111,11 @@ GlobalHandler can catch the error and redirect to the page with error descriptio
 - Banning system
 
 
-## 🛠 Skills
+### 🛠 Skills
 Spring (Security, Data...), Maven, Thymeleaf, JS, MongoDB and RabbitMQ
+
+### Links
+
+There's a short video where you can see how it works
+
+- [Youtube video [1:44]](https://www.youtube.com/watch?v=VDEaEaWzu_E&ab_channel=JessieCasey)
