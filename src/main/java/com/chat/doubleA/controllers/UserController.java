@@ -103,9 +103,10 @@ public class UserController {
     public String banUser(@PathVariable String id) {
 
         User user = userService.readById(id);
-        user.setRole(roleService.readByName("BANNED"));
-        userService.update(user);
-
+        if (!user.getRole().getName().equals("ADMIN")) {
+            user.setRole(roleService.readByName("BANNED"));
+            userService.update(user);
+        }
         return "redirect:/board";
     }
 }

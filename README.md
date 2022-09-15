@@ -6,9 +6,9 @@ Chat application is built on Spring and MongoDB
 
 ### Installation
 
-To get started you need to have docker installed on your machine
+To get started you need to have Docker installed on your machine
 
-Then, you can run .yaml files not only directly in IDE, but also in terminal
+Then, we need to run .yaml files, you can not only directly open them in IDE, but also in terminal
 
 ```bash
   docker-compose -f docker-mongoDB.yaml up
@@ -16,7 +16,7 @@ Then, you can run .yaml files not only directly in IDE, but also in terminal
 ```bash
   docker-compose -f docker-rabbitMQ.yaml up
 ```
-Don't forget to enable stomp plugin in RabbitMQ
+Also, we need to enable stomp plugin in RabbitMQ
 (You could use CLI in Docker to enable it)
 
 ```bash
@@ -37,14 +37,22 @@ let port = 9091;
 
 ## Run it
 
-The project has a Bootstrap class, 
+That's all, you need to run Application class in your IDE.
+```java
+@SpringBootApplication
+public class Application {
+  //...
+}
+```
+
+The project has a Bootstrap class,
 which  includes all pre-data you need to test the application,
 so you could avoid of registration the rooms or users to work with.
 
 ```java
 @Component
 public class Bootstrap {
-  ...
+  //...
 }
 ```
 
@@ -57,6 +65,7 @@ Thanks to Bootstrap class, we have users already in DB.
 |:---------|:------------|:--------------------|:-----|
 | `Tony`   | `PassJava1` | tonyPizza@gmail.com | Admin|
 | `Kate`   | `PassJava2` | kate@gmail.com      | User |
+| `Alex`   | `PassJava3` | alex@gmail.com      | User |
 
 | Title  | Topic     | Password |
 |:-------|:----------|:---------|
@@ -87,15 +96,15 @@ where you can control and see what people have written before.
 ![alt text](./imgs/messages.png)
 
 Furthermore, you are able to ban users or to unban them.
-In the case of it the user would see the next if he tries to enter to any endpoints.
-GlobalHandler can catch the error and redirect to the page with error description
-![alt text](./imgs/banned.png)
+In the case of it the user would see the next, if he tries to enter to any endpoints.
+GlobalHandler can catch the error and redirect to the page with error description. (Admin cannot be banned)
 
+![alt text](./imgs/banned.png)
 
 ## Features
 
-- Chatrooms secured with passwords
-- History of chatrooms are saved in DB
+- Chatrooms are secured with passwords
+- History of every chatroom is saved in DB
 - If you are connecting via the link, you don't need to provide password
 - If the user is not owner, so the room will be erased locally on its profile
 - Admin board, it provides all info about their messages

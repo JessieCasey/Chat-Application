@@ -36,25 +36,25 @@ public class Bootstrap {
 
                 if (!userRepository.existsByEmail("t@gmail.com") && !userRepository.existsByEmail("k@gmail.com")) {
                     User tony = new User();
-                    tony.setEmail("t@gmail.com");
+                    tony.setEmail("tonyPizza@gmail.com");
                     tony.setCreatedAt(LocalDateTime.now());
-                    tony.setPassword(passwordEncoder.encode("Tony1"));
+                    tony.setPassword(passwordEncoder.encode("PassJava1"));
                     tony.setUsername("Tony");
                     tony.setRole(adminRole);
                     userRepository.insert(tony);
 
                     User kate = new User();
-                    kate.setEmail("k@gmail.com");
+                    kate.setEmail("kate@gmail.com");
                     kate.setCreatedAt(LocalDateTime.now());
-                    kate.setPassword(passwordEncoder.encode("Kate1"));
+                    kate.setPassword(passwordEncoder.encode("PassJava2"));
                     kate.setUsername("Kate");
                     kate.setRole(userRole);
                     userRepository.insert(kate);
 
                     User alex = new User();
-                    alex.setEmail("a@gmail.com");
+                    alex.setEmail("alex@gmail.com");
                     alex.setCreatedAt(LocalDateTime.now());
-                    alex.setPassword(passwordEncoder.encode("Alex1"));
+                    alex.setPassword(passwordEncoder.encode("PassJava3"));
                     alex.setUsername("Alex");
                     alex.setRole(userRole);
                     userRepository.insert(alex);
