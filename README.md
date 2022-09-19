@@ -25,7 +25,7 @@ Also, we need to enable stomp plugin in RabbitMQ
 
 ![alt text](./imgs/docker_cli.png)
 
-The server runs on 9091 port, but if have any conflicts, you can change it
+The server runs on 9091 port, but if you have any conflicts, you can change it
 
 ```
 #application.properties
@@ -47,7 +47,7 @@ public class Application {
 
 The project has a Bootstrap class,
 which  includes all pre-data you need to test the application,
-so you could avoid of registration the rooms or users to work with.
+so you could avoid registration the rooms or users to work with.
 
 ```java
 @Component
@@ -80,7 +80,7 @@ Congratulations! You are inside the app 🎉
 
 ### 🚀 Before
 "I would recommend you to open different browsers (Or open second page in incognito mode) 
-and login with different users and enter to the same chatroom, 
+and login with different users and enter the same chatroom, 
 so then you can feel better how it works"
 
 ###  Start
@@ -95,9 +95,9 @@ where you can control and see what people have written before.
 ![alt text](./imgs/adminBoard.png)
 ![alt text](./imgs/messages.png)
 
-Furthermore, you are able to ban users or to unban them.
-In the case of it the user would see the next, if he tries to enter to any endpoints.
-GlobalHandler can catch the error and redirect to the page with error description. (Admin cannot be banned)
+Furthermore, you are able to ban users or to unban them. 
+In case a user is banned and they try to enter any endpoints, they will see the next (screenshot below).
+GlobalHandler can catch that user is banned and redirect to the page with error description. (Also, Admin cannot be banned)
 
 ![alt text](./imgs/banned.png)
 
@@ -106,7 +106,7 @@ GlobalHandler can catch the error and redirect to the page with error descriptio
 - Chatrooms are secured with passwords
 - History of every chatroom is saved in DB
 - If you are connecting via the link, you don't need to provide password
-- If the user is not owner, so the room will be erased locally on its profile
+- If the user is not an owner, so the room will be erased locally on its profile
 - Admin board, it provides all info about their messages
 - Banning system
 
